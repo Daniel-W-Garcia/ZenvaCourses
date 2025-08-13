@@ -35,6 +35,3 @@ build/
 *.suo
 *.swp
 *.vscode/
-
-#ignore secrets
-.env

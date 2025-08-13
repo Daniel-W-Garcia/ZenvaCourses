@@ -1,0 +1,18 @@
+research_task:
+  description: >
+    Research and gather detailed information about {topic}. Focus on relevance, accuracy and providing comprehensive insights
+  expected_output: >
+    A well structured set of researched notes highlighting key points about the topic.
+  agent: researcher
+  inputs:
+    - topic
+
+reporting_task:
+  description: >
+    Analyze the research data and create a comprehensive report or article about {topic}.
+    Ensure the content is easy to understand, engaging and formatted professionally.
+  expected_output: >
+    A formatted article summarizing key insights about the given topic.
+  agent: reporting_analyst
+  inputs:
+    - topic
