@@ -4,7 +4,7 @@ import warnings
 
 from datetime import datetime
 
-from buddy_ai.crew import BuddyAi
+from .crew import BuddyAi
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -17,11 +17,8 @@ def run():
     """
     Run the crew.
     """
-    inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
-    }
-    
+    inputs = {  }
+
     try:
         BuddyAi().crew().kickoff(inputs=inputs)
     except Exception as e:
@@ -32,10 +29,7 @@ def train():
     """
     Train the crew for a given number of iterations.
     """
-    inputs = {
-        "topic": "AI LLMs",
-        'current_year': str(datetime.now().year)
-    }
+    inputs = {  }
     try:
         BuddyAi().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
 
@@ -56,10 +50,7 @@ def test():
     """
     Test the crew execution and returns the results.
     """
-    inputs = {
-        "topic": "AI LLMs",
-        "current_year": str(datetime.now().year)
-    }
+    inputs = { }
     
     try:
         BuddyAi().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)

@@ -1,9 +1,9 @@
 [project]
 name = "buddy_ai"
 version = "0.1.0"
-description = "buddy_ai using crewAI"
-authors = [{ name = "Your Name", email = "you@example.com" }]
-requires-python = ">=3.10,<3.14"
+description = "Study buddy app to assist in learning"
+authors = [{ name = "Daniel Garcia", email = "danielwgarcia@gmail.com" }]
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "crewai[tools]>=0.157.0,<1.0.0"
 ]

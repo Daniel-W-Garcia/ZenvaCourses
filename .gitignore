@@ -34,7 +34,36 @@ build/
 *.solution
 *.suo
 *.swp
-*.vscode/
+.vscode/
 
-#ignore secrets
+# Ignore secrets
 .env
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Windows system files
+Thumbs.db
+
+# Ignore Python specific files and directories
+*.sublime-project
+*.sublime-workspace
+
+# Ignore database files (SQLite, etc.)
+*.sqlite3
+
+# Ignore node modules (if applicable)
+node_modules/
+
+# Ignore coverage reports (if applicable)
+htmlcov/
+.coverage
+
+# Ignore documentation build files (if applicable)
+docs/_build/
+
+# Ignore any other specific unnecessary files or directories you have in mind.
+flights.csv

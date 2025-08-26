@@ -1,7 +1,20 @@
+import os.path
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+
+from crewai_tools import PDFSearchTool
+
+PDF_PATH = './knowledge/TheColaTrap.pdf'
+OUTPUT_DIR = "output"
+SUMMARY_PATH = f"{OUTPUT_DIR}/summary.md"
+QUIZ_PATH = f"{OUTPUT_DIR}/quiz.md"
+RESULTS_PATH = f"{OUTPUT_DIR}/results.md"
+
+
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -13,23 +26,41 @@ class BuddyAi():
     agents: List[BaseAgent]
     tasks: List[Task]
 
+
+
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
     # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    
+
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def pdf_reader(self) -> Agent:
+
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
+            config=self.agents_config['pdf_reader'], # type: ignore[index]
+            verbose=True,
+            tools=[PDFSearchTool(pdf=PDF_PATH)]
+        )
+
+    @agent
+    def summarizer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['summarizer'], # type: ignore[index]
             verbose=True
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def quiz_maker(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            config=self.agents_config['quiz_maker'],  # type: ignore[index]
+            verbose=True,
+        )
+
+    @agent
+    def quiz_buddy(self) -> Agent:
+        return Agent(
+            config=self.agents_config['quiz_buddy'],  # type: ignore[index]
             verbose=True
         )
 
@@ -37,18 +68,34 @@ class BuddyAi():
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
     @task
-    def research_task(self) -> Task:
+    def reading_task(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+            config=self.tasks_config['reading_task'], # type: ignore[index]
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def summarize_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            config=self.tasks_config['summarize_task'], # type: ignore[index]
+            output_file=SUMMARY_PATH
         )
 
+    @task
+    def create_quiz_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['create_quiz_task'],  # type: ignore[index]
+            output_file=QUIZ_PATH
+        )
+
+    @task
+    def user_test_task(self) -> Task:
+
+        agent.say("Starting user test task")
+
+        return Task(
+            config=self.tasks_config['user_test_task'],  # type: ignore[index]
+            output_file=RESULTS_PATH,
+        )
     @crew
     def crew(self) -> Crew:
         """Creates the BuddyAi crew"""

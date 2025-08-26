@@ -1,17 +1,42 @@
-research_task:
+reading_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Extract the entire provided text.
+    Return the raw text contents without modification
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    The complete extracted text of the PDF document
+  agent: pdf_reader
 
-reporting_task:
+summarize_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Take the provided PDF text and summarize into a concise overview that highlights the main points
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A concise summary (2-4 paragraphs) highlighting the key themes and facts from the document
+  agent: summarizer
+  context:
+    - reading_task
+  output_file:
+    summary.md
+
+create_quiz_task:
+  description: >
+    Using the summary fo the PDF's content, create a quiz with multiple-choice questions that test understanding
+    of the main concepts. Provide 5, multiple-choice questions. Each question should have 4 options and indicate 
+    the correct answer.
+  expected_output: >
+    a quiz with 5 multiple choice questions and their correct answers
+  agent: quiz_maker
+  context:
+    - summarize_task
+  output_file:
+    quiz.md
+
+user_test_task:
+  description: >
+    Present the quiz questions to the user. Ask them to provide their answers.
+    Check the correctness of each user response and provide a final score.
+  expected_output: >
+    A summary of user performance, e.g. "You answered x out of y questions correctly."
+  agent: quiz_buddy
+  context:
+    - create_quiz_task
+  human_input: true
