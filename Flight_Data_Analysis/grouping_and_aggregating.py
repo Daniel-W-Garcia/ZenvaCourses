@@ -35,3 +35,22 @@ plt.ylabel('Number of Flights')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+#%%
+df['Year'] = df['Fly Date'].astype(str).str.slice(0,4)
+year_groups = df.groupby('Year')
+year_groups.agg({'Flights': 'sum'}).plot(kind='line')
+plt.title('Total Number of Flights by Year')
+plt.xlabel('Year')
+plt.ylabel('Number of Flights')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+#%%
+distance_bins = pd.cut(df['Distance'], bins=[0, 500, 1000, 2000, 3000, 4000, df['Distance'].max()])
+distance_groups = df.groupby(distance_bins).agg({'Flights': 'sum'})
+distance_groups.plot(kind='pie', y='Flights')
+plt.title('Distribution of Flights by Distance')
+plt.tight_layout()
+plt.show()
