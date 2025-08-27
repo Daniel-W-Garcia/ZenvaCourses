@@ -67,3 +67,4 @@ docs/_build/
 
 # Ignore any other specific unnecessary files or directories you have in mind.
 flights.csv
+*.csv
